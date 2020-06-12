@@ -8,9 +8,10 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>My AngularJS App</title>
+    <title>Pencil POC</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <base href="/" />
     <link
       rel="stylesheet"
       href="lib/html5-boilerplate/dist/css/normalize.css"
@@ -19,11 +20,21 @@
     <link rel="stylesheet" href="app.css" />
     <script src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   </head>
-  <body>
-    <ul class="menu">
-      <li><a href="#!/view1">view1</a></li>
-      <li><a href="#!/view2">view2</a></li>
-    </ul>
+  <body
+    ng-controller="MainController"
+    style="align-items: center; display: flex; justify-content: center;"
+  >
+    <div id="Login" ng-show="page===0">
+      <button ng-click="signIn()">
+        Log in to your Google account to continue
+      </button>
+    </div>
+
+    <div id="Editor" ng-show="page===1">
+      <button ng-click="logout()">
+        Log out
+      </button>
+    </div>
 
     <!--[if lt IE 7]>
       <p class="browsehappy">
@@ -35,13 +46,34 @@
 
     <div ng-view></div>
 
-    <div>AngularJS seed app: v<span app-version></span></div>
-
     <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDzdJaZ-yPO0xRXzxj4DQtvos50I0DEly0",
+        authDomain: "pencil-task.firebaseapp.com",
+        databaseURL: "https://pencil-task.firebaseio.com",
+        projectId: "pencil-task",
+        storageBucket: "pencil-task.appspot.com",
+        messagingSenderId: "597183395915",
+        appId: "1:597183395915:web:532f7fcf77837c26f9f5ce",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
     <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-route/angular-route.js"></script>
     <script src="app.js"></script>
     <script src="view1/view1.js"></script>
     <script src="view2/view2.js"></script>
