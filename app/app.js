@@ -56,7 +56,8 @@ app.controller("MainController", function ($scope) {
       .ref("users/" + localStorage.getItem("token"))
       .once("value")
       .then(function (dataSnapshot) {
-        mediumEditor.setContent(dataSnapshot.val().data);
+        if (dataSnapshot.val())
+          mediumEditor.setContent(dataSnapshot.val().data);
       });
   };
 
@@ -86,6 +87,7 @@ app.controller("MainController", function ($scope) {
   // Clears token so you can log in as someone else
   $scope.logout = function () {
     localStorage.removeItem("token");
+    mediumEditor.setContent("");
     $scope.page = 0;
   };
 });
