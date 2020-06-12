@@ -16,6 +16,13 @@
       rel="stylesheet"
       href="lib/html5-boilerplate/dist/css/normalize.css"
     />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+      type="text/css"
+      media="screen"
+      charset="utf-8"
+    />
     <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/main.css" />
     <link rel="stylesheet" href="app.css" />
     <script src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -24,16 +31,41 @@
     ng-controller="MainController"
     style="align-items: center; display: flex; justify-content: center;"
   >
-    <div id="Login" ng-show="page===0">
+    <div
+      id="LoginPage"
+      ng-show="page===0"
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100vh;
+      "
+    >
       <button ng-click="signIn()">
         Log in to your Google account to continue
       </button>
     </div>
 
-    <div id="Editor" ng-show="page===1">
-      <button ng-click="logout()">
+    <div
+      id="EditorPage"
+      ng-show="page===1"
+      style="
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      "
+    >
+      <button ng-click="logout()" style="margin: 50px;">
         Log out
       </button>
+      <div>
+        <div
+          id="Editor"
+          class="editable"
+          style="width: 50vw; height: 80vh; border: 1px black solid;"
+        />
+      </div>
     </div>
 
     <!--[if lt IE 7]>
@@ -43,8 +75,6 @@
         your experience.
       </p>
     <![endif]-->
-
-    <div ng-view></div>
 
     <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -74,8 +104,8 @@
       firebase.initializeApp(firebaseConfig);
     </script>
     <script src="lib/angular/angular.js"></script>
+    <script src="js/medium-editor.min.js"></script>
+
     <script src="app.js"></script>
-    <script src="view1/view1.js"></script>
-    <script src="view2/view2.js"></script>
   </body>
 </html>
