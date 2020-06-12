@@ -48,9 +48,7 @@ app.controller("MainController", function ($scope) {
           queueEditor();
         });
       })
-      .catch(function () {
-        alert("Login seems to have failed, maybe try again?");
-      });
+      .catch(function () {});
   };
 
   $scope.logout = function () {
