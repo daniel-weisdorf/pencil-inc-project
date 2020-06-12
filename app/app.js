@@ -15,8 +15,35 @@ app.controller("MainController", function ($scope) {
   // Update database every time the editor is updated
   // Also check for latex constantly
   mediumEditor.subscribe("editableInput", function () {
+    let contents = mediumEditor.getContent();
+    // Latex check
+
+    let firstDollar = contents.indexOf("$");
+    if (firstDollar !== -1) {
+      console.log;
+      let secondDollar = contents.indexOf("$", firstDollar + 1);
+      if (secondDollar !== -1) {
+        // Unfortunately at this point we have to assume that whatever Latex they wrote is good and we replace it with a hotlink to an online api that will render it for them
+        // Realistically, writing a Latex validator for this project and only replacing valid Latex is... much more than anyone should be asked of for a project like this
+
+        let latexExpression = contents.substring(firstDollar + 1, secondDollar);
+        let latexElement =
+          '<img src="https://latex.codecogs.com/gif.latex?' +
+          latexExpression +
+          '" title="" style="">';
+
+        console.log(latexElement);
+        console.log(latexExpression);
+
+        contents = contents
+          .replace(latexExpression, latexElement)
+          .replace(/$/g, "");
+        mediumEditor.setContent(contents);
+      }
+    }
+
     database.ref("users/" + localStorage.getItem("token")).set({
-      data: mediumEditor.getContent(),
+      data: contents,
     });
   });
 
@@ -45,7 +72,7 @@ app.controller("MainController", function ($scope) {
       .then(function (result) {
         let email = result.user.email;
         // Strip out the @ and . symbols (invalid in keys in the database)
-        let userId = email.replace("@", "").replace(".", "");
+        let userId = email.replace(/@/g, "").replace(/./g, "");
 
         localStorage.setItem("token", userId);
         $scope.$apply(function () {
