@@ -4,7 +4,7 @@ let app = angular.module("myApp", []);
 
 // This isn't a big enough application to warrant multi-page and splitting out of functions into separate controllers etc.
 app.controller("MainController", function ($scope) {
-  // Initial run
+  // Initial setup
   let provider = new firebase.auth.GoogleAuthProvider();
   let database = firebase.database();
 
@@ -12,13 +12,16 @@ app.controller("MainController", function ($scope) {
 
   let mediumEditor = new MediumEditor(".editable");
 
+  // Update database every time the editor is updated
+  // Also check for latex constantly
   mediumEditor.subscribe("editableInput", function () {
     database.ref("users/" + localStorage.getItem("token")).set({
       data: mediumEditor.getContent(),
     });
   });
 
-  let queueEditor = async function () {
+  // Load editor values when going to the editor page
+  let goToEditor = function () {
     $scope.page = 1;
 
     database
@@ -29,8 +32,9 @@ app.controller("MainController", function ($scope) {
       });
   };
 
+  // On initial load - if you have a login token already, go straight to editor page
   if (localStorage.getItem("token")) {
-    queueEditor();
+    goToEditor();
   }
 
   // Functions for later
@@ -40,17 +44,18 @@ app.controller("MainController", function ($scope) {
       .signInWithPopup(provider)
       .then(function (result) {
         let email = result.user.email;
-        let userId = email.substring(0, email.indexOf("@")).replace(".", "");
+        // Strip out the @ and . symbols (invalid in keys in the database)
+        let userId = email.replace("@", "").replace(".", "");
 
-        localStorage.setItem("token", userId); // easy unique key for the json
-        console.log(result.user.email);
+        localStorage.setItem("token", userId);
         $scope.$apply(function () {
-          queueEditor();
+          goToEditor();
         });
       })
       .catch(function () {});
   };
 
+  // Clears token so you can log in as someone else
   $scope.logout = function () {
     localStorage.removeItem("token");
     $scope.page = 0;
