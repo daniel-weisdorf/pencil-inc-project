@@ -37,7 +37,8 @@ app.controller("MainController", function ($scope) {
 
         contents = contents
           .replace(latexExpression, latexElement)
-          .replace(/$/g, "");
+          .replace(/[$]/g, "");
+
         mediumEditor.setContent(contents);
       }
     }
@@ -72,7 +73,7 @@ app.controller("MainController", function ($scope) {
       .then(function (result) {
         let email = result.user.email;
         // Strip out the @ and . symbols (invalid in keys in the database)
-        let userId = email.replace(/@/g, "").replace(/./g, "");
+        let userId = email.replace(/[@]/g, "").replace(/[.]/g, "");
 
         localStorage.setItem("token", userId);
         $scope.$apply(function () {
