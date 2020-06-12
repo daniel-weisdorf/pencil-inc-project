@@ -22,3 +22,7 @@ symbols (e.g. $1+1=2\$) and once the user is done typing them out, render the ac
    equation.
 
 Base setup from angular-seed
+
+The entirety of the code is contained in app.js since this task is a very small application.
+
+UI not included because that seems excessive when the point is to demonstrate features/functionality.
